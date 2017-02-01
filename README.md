@@ -45,6 +45,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.0.2
+
+* ignore already added types
+
 ### 1.0.1
 
 * fix index.js
