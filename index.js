@@ -27,6 +27,9 @@ class Validator {
   }
 
   addType(name,schema) {
+    if(this.subSchemas.indexOf(name)!=-1)
+      return;
+
     this.subSchemas.push(name);
     this.ajv.addSchema(schema, name);
 
