@@ -1,4 +1,5 @@
 # ProtoDef-validator
+[![NPM version](https://img.shields.io/npm/v/protodef-validator.svg)](http://npmjs.com/package/protodef-validator)
 
 Validate [ProtoDef](https://github.com/ProtoDef-io/ProtoDef) protocol definition in node
 
