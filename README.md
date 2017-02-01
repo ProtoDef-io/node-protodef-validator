@@ -45,6 +45,6 @@ throws an exception if the protocol isn't correct
 
 ## History
 
-### 1.0.0 (unreleased)
+### 1.0.0
 
 * can validate types and protocols
