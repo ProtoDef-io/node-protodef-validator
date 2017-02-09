@@ -23,9 +23,11 @@ You can install this package globally with `npm install -g protodef-validator` a
 
 Class to make validator instances
 
-#### Validator.addType(name,schema)
+#### Validator.addType(name [,schema])
 
 add the type `name` with schema `schema`
+
+If `schema` isn't specified, use a default schema.
 
 #### Validator.addTypes(schemas)
 
