@@ -47,6 +47,12 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.1.0
+
+* check the datatypes have been defined
+* make it possible to add types with a default schema
+* better errors
+
 ### 1.0.2
 
 * ignore already added types
