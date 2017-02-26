@@ -47,6 +47,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.1.5
+
+* properly normalize schema names
+
 ### 1.1.4
 
 * normalize refs
