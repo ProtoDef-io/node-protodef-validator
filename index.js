@@ -69,6 +69,7 @@ class Validator {
     let valid = this.ajv.validate("dataType",type);
     this.compiled=true;
     if(!valid) {
+      console.log(JSON.stringify(this.ajv.errors[0],null,2));
       if(this.ajv.errors[0]['parentSchema']['title']=="dataType") {
         this.validateTypeGoingInside(this.ajv.errors[0]['data']);
       }
@@ -83,6 +84,7 @@ class Validator {
       let valid = this.ajv.validate(type[0],type);
       this.compiled=true;
       if(!valid) {
+        console.log(JSON.stringify(this.ajv.errors[0],null,2));
         if(this.ajv.errors[0]['parentSchema']['title']=="dataType") {
           this.validateTypeGoingInside(this.ajv.errors[0]['data']);
         }
