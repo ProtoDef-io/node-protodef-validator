@@ -47,6 +47,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.1.3
+
+* print errors again
+
 ### 1.1.2
 
 * fix release
