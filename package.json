@@ -1,6 +1,6 @@
 {
   "name": "protodef-validator",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Validate ProtoDef protocol definition in node",
   "main": "index.js",
   "scripts": {

@@ -47,6 +47,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.1.6
+
+* fix compareToValue switch property allowance
+
 ### 1.1.5
 
 * properly normalize schema names
