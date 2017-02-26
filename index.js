@@ -2,15 +2,20 @@ const Ajv = require('ajv');
 const assert=require("assert");
 
 class Validator {
-  constructor(v) {
+  constructor(typesSchemas) {
+    this.createAjvInstance(typesSchemas);
+    this.addDefaultTypes();
+  }
+
+  createAjvInstance(typesSchemas) {
+    this.typesSchemas = {};
+    this.compiled=false;
     this.ajv = new Ajv({verbose:true});
     this.ajv.addSchema(require("./ProtoDef/schemas/definitions.json"),"definitions");
     this.ajv.addSchema(require("./ProtoDef/schemas/protocol_schema.json"),"protocol");
-    this.typesSchemas = {};
-    this.addDefaultTypes();
-
-    if(v)
-      Object.keys(v.typesSchemas).forEach(s => this.addType(s,v.typesSchemas[s]));
+    if(typesSchemas) {
+      Object.keys(typesSchemas).forEach(s => this.addType(s, typesSchemas[s]));
+    }
   }
 
   addDefaultTypes() {
@@ -43,7 +48,14 @@ class Validator {
     }
 
     this.typesSchemas[name]=schema;
-    this.ajv.addSchema(schema, name);
+
+    // recreate ajv instance to recompile dataType (and all depending types) when adding a type
+    if(this.compiled)
+      this.createAjvInstance(this.typesSchemas);
+    else {
+      this.ajv.addSchema(schema, name);
+    }
+
 
     this.ajv.removeSchema("dataType");
     this.ajv.addSchema({
@@ -55,8 +67,8 @@ class Validator {
 
   validateType(type) {
     let valid = this.ajv.validate("dataType",type);
+    this.compiled=true;
     if(!valid) {
-      console.log(JSON.stringify(this.ajv.errors[0],null,2));
       if(this.ajv.errors[0]['parentSchema']['title']=="dataType") {
         this.validateTypeGoingInside(this.ajv.errors[0]['data']);
       }
@@ -69,8 +81,8 @@ class Validator {
       assert.ok(this.typesSchemas[type[0]]!=undefined,type+" is an undefined type");
 
       let valid = this.ajv.validate(type[0],type);
+      this.compiled=true;
       if(!valid) {
-        console.log(JSON.stringify(this.ajv.errors[0],null,2));
         if(this.ajv.errors[0]['parentSchema']['title']=="dataType") {
           this.validateTypeGoingInside(this.ajv.errors[0]['data']);
         }
@@ -92,7 +104,7 @@ class Validator {
 
     // 2. recursively create several validator from current one and validate that
     function validateTypes(p,originalValidator,path) {
-      const v=new Validator(originalValidator);
+      const v=new Validator(originalValidator.typesSchemas);
       Object.keys(p).forEach(k => {
         if(k=="types") {
           // 2 steps for recursive types
