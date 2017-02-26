@@ -47,6 +47,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.1.7
+
+* properly define compareTo/compareToValue
+
 ### 1.1.6
 
 * fix compareToValue switch property allowance
