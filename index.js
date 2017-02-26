@@ -29,8 +29,13 @@ class Validator {
     Object.keys(schemas).forEach((name) => this.addType(name, schemas[name]));
   }
 
+  typeToSchemaName(name) {
+    return name.replace('|','_');
+  }
+
   addType(name,schema) {
-    if(this.typesSchemas[name] != undefined)
+    const schemaName=this.typeToSchemaName(name);
+    if(this.typesSchemas[schemaName] != undefined)
       return;
 
     if(!schema) { // default schema
@@ -47,13 +52,13 @@ class Validator {
         ]};
     }
 
-    this.typesSchemas[name]=schema;
+    this.typesSchemas[schemaName]=schema;
 
     // recreate ajv instance to recompile dataType (and all depending types) when adding a type
     if(this.compiled)
       this.createAjvInstance(this.typesSchemas);
     else {
-      this.ajv.addSchema(schema, name);
+      this.ajv.addSchema(schema, schemaName);
     }
 
 
@@ -61,7 +66,7 @@ class Validator {
     this.ajv.addSchema({
       "$schema": "http://json-schema.org/draft-04/schema#",
       "title": "dataType",
-      "oneOf": [{"enum":["native"]}].concat(Object.keys(this.typesSchemas).map(name => ({"$ref": name.replace('|','_')})))
+      "oneOf": [{"enum":["native"]}].concat(Object.keys(this.typesSchemas).map(name => ({"$ref": this.typeToSchemaName(name)})))
     },"dataType");
   }
 
@@ -79,7 +84,7 @@ class Validator {
 
   validateTypeGoingInside(type) {
     if(Array.isArray(type)) {
-      assert.ok(this.typesSchemas[type[0]]!=undefined,type+" is an undefined type");
+      assert.ok(this.typesSchemas[this.typeToSchemaName(type[0])]!=undefined,type+" is an undefined type");
 
       let valid = this.ajv.validate(type[0],type);
       this.compiled=true;
@@ -94,7 +99,7 @@ class Validator {
     else {
       if(type=="native")
         return;
-      assert.ok(this.typesSchemas[type]!=undefined,type+" is an undefined type");
+      assert.ok(this.typesSchemas[this.typeToSchemaName(type)]!=undefined,type+" is an undefined type");
     }
   }
 
