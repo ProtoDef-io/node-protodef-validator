@@ -47,6 +47,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.1.1
+
+* recreate ajv instance to recompile if types were validated hence compiled
+
 ### 1.1.0
 
 * check the datatypes have been defined
