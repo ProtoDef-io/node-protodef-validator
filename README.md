@@ -47,6 +47,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.2.0
+
+* allow : in switch keys
+
 ### 1.1.7
 
 * properly define compareTo/compareToValue
