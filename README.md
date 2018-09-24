@@ -47,6 +47,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.2.1
+
+* update ajv and protodef
+
 ### 1.2.0
 
 * allow : in switch keys
