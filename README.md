@@ -47,6 +47,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.2.2
+
+* fix release
+
 ### 1.2.1
 
 * update ajv and protodef
