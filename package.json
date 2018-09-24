@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/ProtoDef-io/node-protodef-validator#readme",
   "dependencies": {
-    "ajv": "^4.11.2"
+    "ajv": "^6.5.4"
   }
 }

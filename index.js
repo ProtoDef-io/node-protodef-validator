@@ -64,7 +64,6 @@ class Validator {
 
     this.ajv.removeSchema("dataType");
     this.ajv.addSchema({
-      "$schema": "http://json-schema.org/draft-04/schema#",
       "title": "dataType",
       "oneOf": [{"enum":["native"]}].concat(Object.keys(this.typesSchemas).map(name => ({"$ref": this.typeToSchemaName(name)})))
     },"dataType");
