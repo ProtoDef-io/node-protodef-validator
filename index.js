@@ -19,10 +19,10 @@ class Validator {
   }
 
   addDefaultTypes() {
-    this.addTypes(require("./ProtoDef/schemas/numeric"));
-    this.addTypes(require("./ProtoDef/schemas/utils"));
-    this.addTypes(require("./ProtoDef/schemas/structures"));
-    this.addTypes(require("./ProtoDef/schemas/conditional"));
+    this.addTypes(require("./ProtoDef/schemas/numeric.json"));
+    this.addTypes(require("./ProtoDef/schemas/utils.json"));
+    this.addTypes(require("./ProtoDef/schemas/structures.json"));
+    this.addTypes(require("./ProtoDef/schemas/conditional.json"));
   }
 
   addTypes(schemas) {
