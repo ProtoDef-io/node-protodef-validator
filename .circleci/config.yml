@@ -16,4 +16,3 @@ jobs:
           paths:
             - ./node_modules
       - run: npm test
-      - run: npm run benchmark
