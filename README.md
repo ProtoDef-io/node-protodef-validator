@@ -1,5 +1,6 @@
 # ProtoDef-validator
 [![NPM version](https://img.shields.io/npm/v/protodef-validator.svg)](http://npmjs.com/package/protodef-validator)
+[![Build Status](https://circleci.com/gh/ProtoDef-io/node-protodef-validator/tree/master.svg?style=shield)](https://circleci.com/gh/ProtoDef-io/node-protodef-validator/tree/master)
 [![Try it on gitpod](https://img.shields.io/badge/try-on%20gitpod-brightgreen.svg)](https://gitpod.io/#https://github.com/ProtoDef-io/node-protodef-validator)
 
 Validate [ProtoDef](https://github.com/ProtoDef-io/ProtoDef) protocol definition in node
