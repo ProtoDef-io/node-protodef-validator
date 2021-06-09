@@ -49,6 +49,10 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.3.0
+
+* update protodef
+
 ### 1.2.3
 
 * add .json suffix when requiring (for webpack)
