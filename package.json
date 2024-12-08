@@ -4,6 +4,7 @@
   "description": "Validate ProtoDef protocol definition in node",
   "main": "index.js",
   "scripts": {
+    "prepare": "git submodule update --init",
     "test": "node example.js"
   },
   "repository": {
