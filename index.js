@@ -9,6 +9,9 @@ class Validator {
 
   createAjvInstance(typesSchemas) {
     this.typesSchemas = {};
+    this.customTypeNames = new Set(); // schemaName of types with a real schema
+    this.defaultTypeNames = new Set(); // original name of default-schema types
+    this.dataTypeDirty = false;
     this.compiled=false;
     this.ajv = new Ajv({verbose:true});
     this.ajv.addSchema(require("./ProtoDef/schemas/definitions.json"),"definitions");
@@ -34,11 +37,12 @@ class Validator {
     return name.replace('|','_');
   }
 
-  addType(name,schema) {
+  addType(name,schema_arg) {
     const schemaName=this.typeToSchemaName(name);
     if(this.typesSchemas[schemaName] != undefined)
       return;
 
+    let schema = schema_arg;
     if(!schema) { // default schema
       schema={
         "oneOf":[
@@ -54,6 +58,8 @@ class Validator {
     }
 
     this.typesSchemas[schemaName]=schema;
+    if(schema_arg) this.customTypeNames.add(schemaName);
+    else this.defaultTypeNames.add(name);
 
     // recreate ajv instance to recompile dataType (and all depending types) when adding a type
     if(this.compiled)
@@ -62,15 +68,28 @@ class Validator {
       this.ajv.addSchema(schema, schemaName);
     }
 
+    this.dataTypeDirty = true;
+  }
 
+  // dataType used to be a oneOf with one branch per known type name. All
+  // default-schema branches are identical apart from the name, so they collapse
+  // into two discriminating branches (bare name / [name, data] pair); types
+  // with a real schema keep their individual $ref branch. Rebuilt lazily so
+  // registering N types compiles it once instead of N times.
+  rebuildDataType() {
+    if(!this.dataTypeDirty) return;
+    this.dataTypeDirty = false;
+    const defaults=[...this.defaultTypeNames];
+    const branches=[{"enum":["native"].concat(defaults)}];
+    if(defaults.length)
+      branches.push({"type":"array","items":[{"enum":defaults},{"oneOf":[{"type":"object"},{"type":"array"}]}]});
+    for(const name of this.customTypeNames) branches.push({"$ref":name});
     this.ajv.removeSchema("dataType");
-    this.ajv.addSchema({
-      "title": "dataType",
-      "oneOf": [{"enum":["native"]}].concat(Object.keys(this.typesSchemas).map(name => ({"$ref": this.typeToSchemaName(name)})))
-    },"dataType");
+    this.ajv.addSchema({"title":"dataType","oneOf":branches},"dataType");
   }
 
   validateType(type) {
+    this.rebuildDataType();
     let valid = this.ajv.validate("dataType",type);
     this.compiled=true;
     if(!valid) {
@@ -105,6 +124,7 @@ class Validator {
 
   validateProtocol(protocol) {
     // 1. validate with protocol schema with basic datatype def
+    this.rebuildDataType();
     let valid = this.ajv.validate("protocol",protocol);
     assert.ok(valid, JSON.stringify(this.ajv.errors,null,2));
 
