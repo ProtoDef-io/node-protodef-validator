@@ -54,6 +54,11 @@ throws an exception if the protocol isn't correct
 
 ## History
 
+### 1.5.0
+* [Speed up dataType validation ~12x by collapsing default type branches (#18)](https://github.com/ProtoDef-io/node-protodef-validator/commit/30c2075f2f3dd86e5fc0d748cc863eef42e80c3c) (thanks @u9g)
+* [Fix publish condition for npm-publish v4 (#17)](https://github.com/ProtoDef-io/node-protodef-validator/commit/470e691e191261fe3d84a24249790f11d9f8d875) (thanks @rom1504)
+* [Switch to trusted publishing via OIDC (#16)](https://github.com/ProtoDef-io/node-protodef-validator/commit/6080ed63d0791d470f4c2d0ef5d209431d5ff06b) (thanks @rom1504)
+
 ### 1.4.0
 * [Create commands.yml (#14)](https://github.com/ProtoDef-io/node-protodef-validator/commit/3597c71d35a600c76438b2082782032ab40daa97) (thanks @extremeheat)
 * [update submodule (#13)](https://github.com/ProtoDef-io/node-protodef-validator/commit/d79b1085a2590de5e33b811b777b16902134379b) (thanks @extremeheat)
