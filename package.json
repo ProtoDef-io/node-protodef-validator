@@ -4,7 +4,7 @@
   "description": "Validate ProtoDef protocol definition in node",
   "main": "index.js",
   "scripts": {
-    "test": "node example.js"
+    "test": "node example.js && node test.js"
   },
   "repository": {
     "type": "git",

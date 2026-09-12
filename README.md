@@ -20,6 +20,16 @@ npm install protodef-validator
 
 See [example](example.js)
 
+Validation also checks literal switch cases against the output values of a known
+mapper. A default does not permit an impossible explicit case; unused mapper
+values are allowed. Errors identify the definition, comparator and invalid case.
+
+This check follows ordinary container fields, parent references and unambiguous
+non-parameterized protocol aliases. It skips relationships whose meaning is
+unknown, including custom types, dynamic case keys and ambiguous scopes.
+`addType` schemas alone do not describe decoded values. This checks mapper/switch
+consistency, not whether mapper wire IDs match an external protocol.
+
 ## Command Line Interface
 
 You can install this package globally with `npm install -g protodef-validator` and then run `protodef-validator someProtocol.json` to validate it.
