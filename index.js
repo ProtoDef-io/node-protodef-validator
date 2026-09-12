@@ -1,5 +1,19 @@
 const Ajv = require('ajv');
 const assert=require("assert");
+const mappings = require('./validate-mappings');
+
+function validateTypeSchema(type) {
+  this.rebuildDataType();
+  let valid = this.ajv.validate("dataType",type);
+  this.compiled=true;
+  if(!valid) {
+    console.log(JSON.stringify(this.ajv.errors[0],null,2));
+    if(this.ajv.errors[0]['parentSchema']['title']=="dataType") {
+      this.validateTypeGoingInside(this.ajv.errors[0]['data']);
+    }
+    throw new Error("validation error");
+  }
+}
 
 class Validator {
   constructor(typesSchemas) {
@@ -89,16 +103,8 @@ class Validator {
   }
 
   validateType(type) {
-    this.rebuildDataType();
-    let valid = this.ajv.validate("dataType",type);
-    this.compiled=true;
-    if(!valid) {
-      console.log(JSON.stringify(this.ajv.errors[0],null,2));
-      if(this.ajv.errors[0]['parentSchema']['title']=="dataType") {
-        this.validateTypeGoingInside(this.ajv.errors[0]['data']);
-      }
-      throw new Error("validation error");
-    }
+    validateTypeSchema.call(this,type);
+    mappings.validateType(type,this.typesSchemas);
   }
 
   validateTypeGoingInside(type) {
@@ -138,7 +144,7 @@ class Validator {
           Object.keys(p[k]).forEach(typeName => v.addType(typeName));
           Object.keys(p[k]).forEach(typeName => {
             try {
-              v.validateType(p[k][typeName], path + "." + k + "." + typeName);
+              validateTypeSchema.call(v,p[k][typeName]);
             }
             catch(e) {
               throw new Error("Error at "+path + "." + k + "." + typeName);
@@ -151,6 +157,7 @@ class Validator {
       })
     }
     validateTypes(protocol,this,"root");
+    mappings.validateProtocol(protocol,this.typesSchemas);
   }
 }
 
